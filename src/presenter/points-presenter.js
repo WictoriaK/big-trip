@@ -16,9 +16,5 @@ export default class PointsPresenter {
     for(let i = 0; i < 3; i++) {
       render(new TripListItemView(), this.pointsBoard.getElement());
     }
-
-
-
   };
-
 }
