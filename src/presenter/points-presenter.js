@@ -7,14 +7,16 @@ import { render } from '../render.js';
 export default class PointsPresenter {
   pointsBoard = new TripPointsListView();
 
-  init = (pointsContainer) => {
+  init = (pointsContainer, pointsModel) => {
     this.pointsContainer = pointsContainer;
+    this.pointsModel = pointsModel;
+    this.boardPoints = [...this.pointsModel.getPoints()];
 
     render(this.pointsBoard, this.pointsContainer);
-    render(new PointEditView(), this.pointsContainer.querySelector('.trip-sort'), 'afterend' );
+    render(new PointEditView(this.boardPoints[0]), this.pointsContainer.querySelector('.trip-sort'), 'afterend' );
 
-    for(let i = 0; i < 3; i++) {
-      render(new TripListItemView(), this.pointsBoard.getElement());
+    for(let i = 0; i < this.boardPoints.length; i++) {
+      render(new TripListItemView(this.boardPoints[i]), this.pointsBoard.getElement());
     }
   };
 }
