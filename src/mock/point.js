@@ -1,21 +1,10 @@
 import {getRandomPositiveInteger, getRandomArrayElement} from '../utils.js';
-import {offersById} from './offers.js';
 import { destinationsArray} from './destinations.js';
 
 const offerTypes = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
 const generateOfferType = () => getRandomArrayElement(offerTypes);
 const generateDestination = () => getRandomArrayElement(destinationsArray);
-
-const linkOffersToPoint = (pointItem, offers) => {
-  const linkedOffers= pointItem.offers.map((offerId) => offers.get(offerId));
-
-  return {
-    ...pointItem,
-    offers: linkedOffers,
-  };
-};
-
 
 const generatePoint = () => {
   const type = generateOfferType();
@@ -28,18 +17,11 @@ const generatePoint = () => {
     id: 0,
     destination: randomDestination,
     isFavorite: Boolean(getRandomPositiveInteger(0, 1)),
-    offers: [1,3],
+    offers: [1, 2],
     type
   };
 };
 
 
-const points = Array.from({ length: 3 }, () => {
-  const point = generatePoint();
-  return linkOffersToPoint(point, offersById);
-});
-
-// console.log(points)
-
-export {points};
+export {generatePoint};
 

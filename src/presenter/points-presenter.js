@@ -1,22 +1,70 @@
-import TripPointsListView from '../view/trip-points-list-view.js';
-import TripListItemView from '../view/point-item-list-view.js';
+import { render } from '../render.js';
+import PointsListView from '../view/points-list-view.js';
+import PointView from '../view/point-view.js';
 import PointEditView from '../view/point-edit-view.js';
 
-import { render } from '../render.js';
 
 export default class PointsPresenter {
-  pointsBoard = new TripPointsListView();
+  #pointsContainer = null; // куда отрисовывается весь список(ul) точек на сайте
+  #pointsModel = null;
+  #pointsBoard =  new PointsListView(); // список(ul), куда отрисовывается точка машрута(li)
+
+  #boardPoints = [];
 
   init = (pointsContainer, pointsModel) => {
-    this.pointsContainer = pointsContainer;
-    this.pointsModel = pointsModel;
-    this.boardPoints = [...this.pointsModel.getPoints()];
+    this.#pointsContainer = pointsContainer;
+    this.#pointsModel = pointsModel; // данные для отрисовки
+    this.#boardPoints = [...this.#pointsModel.points]; // все поинты для отрисовки из модели
 
-    render(this.pointsBoard, this.pointsContainer);
-    render(new PointEditView(this.boardPoints[0]), this.pointsContainer.querySelector('.trip-sort'), 'afterend' );
+    render(this.#pointsBoard, this.#pointsContainer);
 
-    for(let i = 0; i < this.boardPoints.length; i++) {
-      render(new TripListItemView(this.boardPoints[i]), this.pointsBoard.getElement());
+    for(let i = 0; i < this.#boardPoints.length; i++) {
+      this.#renderPoint(this.#boardPoints[i]);
     }
   };
+
+  #renderPoint = (point) => {
+    const pointComponent = new PointView(point);
+    const pointEditComponent = new PointEditView(point);
+
+
+    const replacePointToForm = () => {
+      this.#pointsBoard.element.replaceChild(pointEditComponent.element, pointComponent.element);
+    };
+
+    const replaceFormToPoint = () => {
+      this.#pointsBoard.element.replaceChild(pointComponent.element, pointEditComponent.element);
+    };
+
+    const onEscKeyDown = (evt) => {
+      if (evt.key === 'Escape' || evt.key === 'Esc') {
+        evt.preventDefault();
+        replaceFormToPoint();
+        document.removeEventListener('keydown', onEscKeyDown);
+
+      }
+    };
+
+
+    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+      replacePointToForm();
+      document.addEventListener('keydown', onEscKeyDown);
+    });
+
+    pointEditComponent.element.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+      replaceFormToPoint();
+      document.removeEventListener('keydown', onEscKeyDown);
+    });
+
+    pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+      replaceFormToPoint();
+      document.removeEventListener('keydown', onEscKeyDown);
+    });
+
+    render(pointComponent, this.#pointsBoard.element);
+
+  };
 }
+
+
