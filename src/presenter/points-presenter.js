@@ -2,25 +2,28 @@ import { render } from '../render.js';
 import PointsListView from '../view/points-list-view.js';
 import PointView from '../view/point-view.js';
 import PointEditView from '../view/point-edit-view.js';
+import NoPointView from '../view/no-points-view';
+import TripSortView from '../view/trip-sort-view.js';
 
+
+const siteContainer = document.querySelector('.trip-events');
 
 export default class PointsPresenter {
   #pointsContainer = null; // куда отрисовывается весь список(ul) точек на сайте
   #pointsModel = null;
-  #pointsBoard =  new PointsListView(); // список(ul), куда отрисовывается точка машрута(li)
+  #pointsList =  new PointsListView(); // список(ul), куда отрисовывается точка машрута(li)
 
   #boardPoints = [];
 
-  init = (pointsContainer, pointsModel) => {
+  constructor(pointsContainer, pointsModel) {
     this.#pointsContainer = pointsContainer;
     this.#pointsModel = pointsModel; // данные для отрисовки
+  }
+
+  init = () => {
     this.#boardPoints = [...this.#pointsModel.points]; // все поинты для отрисовки из модели
 
-    render(this.#pointsBoard, this.#pointsContainer);
-
-    for(let i = 0; i < this.#boardPoints.length; i++) {
-      this.#renderPoint(this.#boardPoints[i]);
-    }
+    this.#renderPointsBoard();
   };
 
   #renderPoint = (point) => {
@@ -29,11 +32,11 @@ export default class PointsPresenter {
 
 
     const replacePointToForm = () => {
-      this.#pointsBoard.element.replaceChild(pointEditComponent.element, pointComponent.element);
+      this.#pointsList.element.replaceChild(pointEditComponent.element, pointComponent.element);
     };
 
     const replaceFormToPoint = () => {
-      this.#pointsBoard.element.replaceChild(pointComponent.element, pointEditComponent.element);
+      this.#pointsList.element.replaceChild(pointComponent.element, pointEditComponent.element);
     };
 
     const onEscKeyDown = (evt) => {
@@ -62,8 +65,21 @@ export default class PointsPresenter {
       document.removeEventListener('keydown', onEscKeyDown);
     });
 
-    render(pointComponent, this.#pointsBoard.element);
+    render(pointComponent, this.#pointsList.element);
 
+  };
+
+  #renderPointsBoard = () => {
+    render(this.#pointsList, this.#pointsContainer);
+
+    if(this.#boardPoints.length === 0) {
+      render(new NoPointView(), this.#pointsContainer);
+    } else {
+      render(new TripSortView(), siteContainer,'afterbegin');
+      for(let i = 0; i < this.#boardPoints.length; i++) {
+        this.#renderPoint(this.#boardPoints[i]);
+      }
+    }
   };
 }
 
