@@ -1,18 +1,30 @@
 import {createElement} from '../render.js';
 import {humanizePointDateFrom, humanizePointTimeFrom} from '../utils.js';
+import {offersArray} from '../mock/offers.js';
 
 
-const createOffersTemplate = (offers) => (
-  `${offers.map(({title, price}) =>
-    `<li class="event__offer">
-      <span class="event__offer-title">${title}</span> +€&nbsp;
-      <span class="event__offer-price">${price}</span>
-    </li>`).join('')}`
-);
+const createOffersTemplate = (point) => {
+  const pointTypeOffer = offersArray.find((offer) => offer.type === point.type);
+
+  if (!pointTypeOffer) {
+    return '';
+  }
+  const offersSet = new Set(point.offers);
+
+  return pointTypeOffer.offers.map((offer) => {
+    const checkedOffer = offersSet.has(offer.id);
+
+    return checkedOffer
+      ? `<li class="event__offer">
+            <span class="event__offer-title">${offer.title}</span> +€&nbsp;
+            <span class="event__offer-price">${offer.price}</span>
+          </li>`
+      : '';}).join('');
+};
 
 
-const createTripPointListItemTemplate = (point) => {
-  const {basePrice, dateFrom, dateTo, destination, type, isFavorite, offers} = point;
+const createTripPointTemplate = (point) => {
+  const {basePrice, dateFrom, dateTo, destination, type, isFavorite} = point;
   // console.log(offers);
 
   const date = dateFrom !== null
@@ -31,7 +43,7 @@ const createTripPointListItemTemplate = (point) => {
     ? 'event__favorite-btn--active'
     : '';
 
-  const linkedOffers = createOffersTemplate(offers);
+  const linkedOffers = createOffersTemplate(point);
 
   return `<li class="trip-events__item">
 <div class="event">
@@ -69,23 +81,26 @@ const createTripPointListItemTemplate = (point) => {
 </li>`;
 };
 
-export default class TripListItemView {
+export default class PointView {
+  #element = null;
+  #point = null;
+
   constructor(point) {
-    this.point = point;
+    this.#point = point;
   }
 
-  getTemplate() {
-    return createTripPointListItemTemplate(this.point);
+  get template() {
+    return createTripPointTemplate(this.#point);
   }
 
-  getElement() {
-    if(!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if(!this.#element) {
+      this.#element = createElement(this.template);
     }
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

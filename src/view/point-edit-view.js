@@ -1,19 +1,30 @@
 import {createElement} from '../render.js';
 import {humanizePointDateFrom, humanizePointTimeFrom} from '../utils.js';
 import {destinationsArray} from '../mock/destinations.js';
+import {offersArray} from '../mock/offers.js';
 
 
-const createOffersTemplate = (offers) => (
-  `${offers.map(({title, price}) =>
-    ` <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage">
+const createOffersTemplate = (point) => {
+  const pointTypeOffer = offersArray.find((offer) => offer.type === point.type);
+
+  if (!pointTypeOffer) {
+    return '';
+  }
+
+  return pointTypeOffer.offers.map((offer) => {
+    const offersSet = new Set(point.offers);
+    const checkedOffer = offersSet.has(offer.id) ? 'checked' : '';
+
+    return `<div class="event__offer-selector">
+                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${checkedOffer}>
                         <label class="event__offer-label" for="event-offer-luggage-1">
-                          <span class="event__offer-title">${title}</span>
+                          <span class="event__offer-title">${offer.title}</span>
                           +€&nbsp;
-                          <span class="event__offer-price">${price}</span>
+                          <span class="event__offer-price">${offer.price}</span>
                         </label>
-                      </div>`).join('')}`
-);
+                      </div>`;
+  }).join('');
+};
 
 const createPhotosTemplate = (pictures) => (
   `${pictures.map(({src, description}) =>
@@ -24,10 +35,11 @@ const createDestinationsTemplate = (array) =>
   (`${array.map((destination) => `<option value='${destination.name}'></option>`).join('')}`
   );
 
-const createTripPointEditFormTemplate = (point = {}) => {
-  const {dateFrom, dateTo, destination, type, offers, price = 220} = point;
 
-  const linkedOffers = createOffersTemplate(offers);
+const createTripPointEditFormTemplate = (point = {}) => {
+  const {dateFrom, dateTo, destination, type, price = 220} = point;
+
+  const linkedOffers = createOffersTemplate(point);
 
   const startDate = dateFrom !== null
     ? humanizePointDateFrom(dateFrom, 'DD/MM/YYYY')
@@ -136,7 +148,10 @@ ${destinationNames}
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-                  <button class="event__reset-btn" type="reset">Cancel</button>
+                  <button class="event__reset-btn" type="reset">Delete</button>
+                  <button class="event__rollup-btn" type="button">
+                    <span class="visually-hidden">Open event</span>
+                  </button>
                 </header>
                 <section class="event__details">
                   <section class="event__section  event__section--offers">
@@ -165,22 +180,25 @@ ${destinationNames}
 
 
 export default class PointEditView {
+  #element = null;
+  #point = null;
+
   constructor(point) {
-    this.point = point;
+    this.#point = point;
   }
 
-  getTemplate() {
-    return createTripPointEditFormTemplate(this.point);
+  get template() {
+    return createTripPointEditFormTemplate(this.#point);
   }
 
-  getElement() {
-    if(!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if(!this.#element) {
+      this.#element = createElement(this.template);
     }
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

@@ -21,6 +21,3 @@ const getRandomArrayElement = (array) => array[getRandomPositiveInteger(0, array
 export {getRandomPositiveInteger, humanizePointDateFrom, humanizePointTimeFrom, getRandomArrayElement};
 
 
-// 'MMM D'
-// 'HH:mm'
-//'DD/MM/YYYY'
