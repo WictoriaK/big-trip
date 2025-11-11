@@ -1,4 +1,4 @@
-import { render } from '../render.js';
+import { render } from '../framework/render.js';
 import PointsListView from '../view/points-list-view.js';
 import PointView from '../view/point-view.js';
 import PointEditView from '../view/point-edit-view.js';
@@ -49,21 +49,21 @@ export default class PointsPresenter {
     };
 
 
-    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+    pointComponent.setEditClickHandler(() => {
       replacePointToForm();
       document.addEventListener('keydown', onEscKeyDown);
     });
 
-    pointEditComponent.element.addEventListener('submit', (evt) => {
-      evt.preventDefault();
+    pointEditComponent.setEditClickHandler(() => {
+      replaceFormToPoint();
+      document.addEventListener('keydown', onEscKeyDown);
+    });
+
+    pointEditComponent.setFormSubmitHandler(() => {
       replaceFormToPoint();
       document.removeEventListener('keydown', onEscKeyDown);
     });
 
-    pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
-      replaceFormToPoint();
-      document.removeEventListener('keydown', onEscKeyDown);
-    });
 
     render(pointComponent, this.#pointsList.element);
 
