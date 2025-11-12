@@ -6,8 +6,6 @@ const FilterTypes = {
   PAST: 'past',
 };
 
-
-
 const getRandomPositiveInteger = (a = 0, b = 1) => {
   if (a === undefined) {
     throw new Error('Первый параметр должен быть число');
