@@ -1,5 +1,12 @@
-
 import dayjs from 'dayjs';
+
+const FilterTypes = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PAST: 'past',
+};
+
+
 
 const getRandomPositiveInteger = (a = 0, b = 1) => {
   if (a === undefined) {
@@ -15,9 +22,17 @@ const getRandomPositiveInteger = (a = 0, b = 1) => {
 const humanizePointDateFrom = (date, format) => dayjs(date).format(`${format}`);
 const humanizePointTimeFrom = (date, format) => dayjs(date).format(`${format}`);
 
+const isPointExpired = (dateFrom) => dateFrom && dayjs().isAfter(dateFrom, 'D');
+const isPointFuture = (dateTo) => dateTo && dayjs().isBefore(dateTo, 'D');
+
+const filter = {
+  [FilterTypes.EVERYTHING]: (points) => points.filter((point) => point),
+  [FilterTypes.FUTURE]: (points) => points.filter((point) => isPointFuture(point.dateTo)),
+  [FilterTypes.PAST]: (points) => points.filter((point) => isPointExpired(point.dateFrom)),
+};
 
 const getRandomArrayElement = (array) => array[getRandomPositiveInteger(0, array.length - 1)];
 
-export {getRandomPositiveInteger, humanizePointDateFrom, humanizePointTimeFrom, getRandomArrayElement};
+export {getRandomPositiveInteger, humanizePointDateFrom, humanizePointTimeFrom, getRandomArrayElement, FilterTypes, filter};
 
 
