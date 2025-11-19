@@ -12,9 +12,9 @@ const generatePoint = () => {
   const randomDestination = generateDestination();
 
   return {
-    basePrice: 1100,
-    dateFrom: '2019-07-10T22:55:56.845Z',
-    dateTo: '2019-07-11T11:22:13.375Z',
+    basePrice: getRandomPositiveInteger(10, 150),
+    dateFrom: `2019-07-${getRandomPositiveInteger(10, 15)}T22:55:56.845Z`,
+    dateTo: `2019-07-${getRandomPositiveInteger(16,20)}T13:${getRandomPositiveInteger(12, 20)}:13.375Z`,
     id: nanoid(),
     destination: randomDestination,
     isFavorite: Boolean(getRandomPositiveInteger(0, 1)),

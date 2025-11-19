@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {humanizePointDateFrom, humanizePointTimeFrom} from '../utils.js';
+import {humanizePointDateFrom, humanizePointTimeFrom, differentDate} from '../utils.js';
 import {offersArray} from '../mock/offers.js';
 
 
@@ -58,7 +58,9 @@ const createTripPointTemplate = (point) => {
                     —
                     <time class="event__end-time" datetime="2019-03-18T11:00">${timeTo}</time>
                   </p>
-                  <p class="event__duration">30M</p>
+                  <p class="event__duration">
+                  ${differentDate(dateFrom, dateTo)}
+</p>
                 </div>
                 <p class="event__price">
                   €&nbsp;<span class="event__price-value">${basePrice}</span>
