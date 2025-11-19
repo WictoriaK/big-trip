@@ -6,6 +6,15 @@ const FilterTypes = {
   PAST: 'past',
 };
 
+const SortTypes= {
+  DAY: 'default',
+  PRICE: 'price',
+  TIME: 'time',
+};
+
+const HOURS_PER_DAY = 24;
+const MIN_IN_AN_HOUR = 60;
+
 const getRandomPositiveInteger = (a = 0, b = 1) => {
   if (a === undefined) {
     throw new Error('Первый параметр должен быть число');
@@ -31,7 +40,6 @@ const filter = {
 
 const getRandomArrayElement = (array) => array[getRandomPositiveInteger(0, array.length - 1)];
 
-
 const updateItem = (items, update) => {
   const index = items.findIndex((item) => item.id === update.id);
   if (index === -1) {
@@ -45,6 +53,44 @@ const updateItem = (items, update) => {
   ];
 };
 
-export {getRandomPositiveInteger, humanizePointDateFrom, humanizePointTimeFrom, getRandomArrayElement, FilterTypes, filter, updateItem};
+const getSortUp = (pointA, pointB) => pointA - pointB;
+
+const sortTimeUp = (pointA, pointB) => {
+  const timeA = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
+  const timeB = dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom));
+
+  return getSortUp(timeB, timeA);
+};
+
+const sortPriceUp = (pointA, pointB) => getSortUp(pointB.basePrice, pointA.basePrice);
+
+const sortDayUp = (pointA, pointB) => getSortUp(dayjs(pointA.dateFrom), dayjs(pointB.dateFrom));
+
+
+const differentDate = (from, to) => {
+  const date1 = dayjs(from);
+  const date2 = dayjs(to);
+
+  const dayResult = date2.diff(date1, 'day');
+  const hourResult = date2.diff(date1, 'hour');
+  const minuteResult = date2.diff(date1, 'minute');
+  if(dayResult){
+    return (
+      `${dayResult}D ${Math.round(hourResult / HOURS_PER_DAY)}H ${Math.round(minuteResult / (HOURS_PER_DAY * MIN_IN_AN_HOUR))}M`
+    );
+
+  }
+  if(hourResult){
+    return(
+      `${hourResult}H ${Math.round(minuteResult / HOURS_PER_DAY)}M`
+    );
+  }
+  return(
+    `${minuteResult}M`
+  );
+
+};
+
+export {getRandomPositiveInteger, humanizePointDateFrom, humanizePointTimeFrom, getRandomArrayElement, FilterTypes, filter, updateItem, SortTypes, sortPriceUp, sortTimeUp, differentDate, sortDayUp};
 
 
