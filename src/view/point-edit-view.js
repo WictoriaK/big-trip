@@ -1,3 +1,5 @@
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {humanizePointDateFrom, humanizePointTimeFrom} from '../utils.js';
 import {destinationsArray, returnDestination} from '../mock/destinations.js';
@@ -140,17 +142,35 @@ ${destinationNames}
 
 
 export default class PointEditView extends AbstractStatefulView {
+  #datePicker = null;
 
   constructor(point) {
     super();
     this._state = PointEditView.parseStateToPoint(point);
 
     this.#setInnerHandlers();
+    this.#setDatePickerFrom();
+    this.#setDatePickerTo();
   }
 
   get template() {
     return createTripPointEditFormTemplate(this._state);
   }
+
+  removeElement = () => {
+    super.removeElement();
+
+    if(this.#datePicker) {
+      this.#datePicker.destroy();
+      this.#datePicker = null;
+    }
+  };
+
+  reset = (point) => {
+    this.updateElement(
+      PointEditView.parsePointToState(point),
+    );
+  };
 
   setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
@@ -204,10 +224,53 @@ export default class PointEditView extends AbstractStatefulView {
     });
   };
 
+  #dateFromChangeHandler = ([userDate]) => {
+    this.updateElement({
+      dateFrom: userDate
+    });
+  };
+
+  #dateToChangeHandler = ([userDate]) => {
+    this.updateElement({
+      dateTo: userDate
+    });
+  };
+
+  #setDatePickerFrom = () => {
+    if(this._state.dateFrom) {
+      this.#datePicker = flatpickr(
+        this.element.querySelector('#event-start-time-1'),
+        {
+          enableTime: true,
+          dateFormat: 'd/m/Y H:i',
+          defaultDate: this._state.dateFrom,
+          onChange: this.#dateFromChangeHandler
+        }
+      );
+    }
+  };
+
+  #setDatePickerTo = () => {
+    if(this._state.dateTo) {
+      this.#datePicker = flatpickr(
+        this.element.querySelector('#event-end-time-1'),
+        {
+          enableTime: true,
+          dateFormat: 'd/m/Y H:i',
+          defaultDate: this._state.dateTo,
+          onChange: this.#dateToChangeHandler
+        }
+      );
+    }
+  };
+
   _restoreHandlers = () => {
     this.#setInnerHandlers();
     this.setEditClickHandler(this._callback.editClick);
+    this.#setDatePickerFrom();
+    this.#setDatePickerTo();
     this.setFormSubmitHandler(this._callback.formSubmit);
+
   };
 
 
