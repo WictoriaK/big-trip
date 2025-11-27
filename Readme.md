@@ -1,7 +1,5 @@
-# Проект «{{projectTitle}}»
+# Проект «Big Trip»
 
-* Студент: [{{userName}}]({{userProfile}}).
-* Наставник: `Неизвестно`.
 
 ---
 
