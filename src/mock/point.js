@@ -23,6 +23,5 @@ const generatePoint = () => {
   };
 };
 
-
 export {generatePoint};
 

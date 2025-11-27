@@ -37,6 +37,7 @@ export default class PointPresenter {
     this.#pointComponent.setEditClickHandler(this.#handleEditClick);
     this.#pointComponent.setFavoriteClickHandler(this.#handeFavoriteClick);
     this.#pointEditComponent.setEditClickHandler(this.#handleCloseClick);
+    this.#pointEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
     this.#pointEditComponent.setFormSubmitHandler(this.#handleFormSubmit);
 
 
@@ -105,4 +106,8 @@ export default class PointPresenter {
     this.#changeData(point);
     this.#replaceFormToPoint();
   };
+
+  #handleDeleteClick = () => {};
+
+
 }
