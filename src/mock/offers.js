@@ -20,21 +20,35 @@ const offersArray = [
     ]
   },
   {
-    type: 'flight',
+    type: 'bus',
     offers: [
       {
         id: 1,
-        title: 'Add luggage',
-        price: 30
+        title: 'Choose seats',
+        price: 5
       },
       {
         id: 2,
-        title: 'Upgrade to a business class',
-        price: 130
+        title: 'Travel by train',
+        price: 10
       }
     ]
   },
-
+  {
+    type: 'train',
+    offers: [
+      {
+        id: 1,
+        title: 'Choose seats',
+        price: 5
+      },
+      {
+        id: 2,
+        title: 'Travel by',
+        price: 10
+      }
+    ]
+  },
   {
     type: 'ship',
     offers: [
@@ -64,22 +78,56 @@ const offersArray = [
     }]
   },
   {
-    type: 'bus',
+    type: 'flight',
     offers: [
       {
         id: 1,
-        title: 'Choose seats',
-        price: 5
+        title: 'Add luggage',
+        price: 30
       },
       {
         id: 2,
-        title: 'Travel by train',
-        price: 10
+        title: 'Upgrade to a business class',
+        price: 130
+      }
+    ]
+  },
+  {
+    type: 'check-in',
+    offers: [
+      {
+        id: 1,
+        title: 'Add luggage',
+        price: 30
+      },
+      {
+        id: 2,
+        title: 'Upgrade to a business class',
+        price: 130
       }
     ]
   },
   {
     type: 'sightseeing',
+    offers: [
+      {
+        id: 1,
+        title: 'Travel by train',
+        price: 40
+      },
+      {
+        id: 2,
+        title: 'Choose seats',
+        price: 20
+      },
+      {
+        id: 3,
+        title: 'by train',
+        price: 40
+      },]
+  },
+  {
+    type: 'restaurant',
     offers: [
       {
         id: 1,

@@ -2,7 +2,7 @@ import { render, RenderPosition } from '../framework/render.js';
 import PointsListView from '../view/points-list-view.js';
 import NoPointView from '../view/no-points-view';
 import TripSortView from '../view/trip-sort-view.js';
-import PointPresenter from './point-presernter';
+import PointPresenter from './point-presenter';
 import {updateItem, SortTypes, sortPriceUp, sortTimeUp, sortDayUp} from '../utils.js';
 
 

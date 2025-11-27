@@ -42,5 +42,10 @@ const destinationsArray =  [
   }
 ];
 
+const returnDestination = (city) => {
+  const destinationCity = destinationsArray.filter((item) => item.name === city) ?? null;
+  return destinationCity[0];
+};
 
-export { destinationsArray};
+
+export { destinationsArray, returnDestination};
