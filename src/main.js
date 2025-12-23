@@ -33,6 +33,3 @@ newPointButtonComponent.setClickHandler(handeNewPointsButtonClick);
 
 filterPresenter.init();
 pointsBoardPresenter.init();
-
-
-
