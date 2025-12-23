@@ -7,6 +7,7 @@ const offerTypes = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in
 const generateOfferType = () => getRandomArrayElement(offerTypes);
 const generateDestination = () => getRandomArrayElement(destinationsArray);
 
+
 const generatePoint = () => {
   const type = generateOfferType();
   const randomDestination = generateDestination();
@@ -16,12 +17,13 @@ const generatePoint = () => {
     dateFrom: `2019-07-${getRandomPositiveInteger(10, 15)}T22:55:56.845Z`,
     dateTo: `2019-07-${getRandomPositiveInteger(16,20)}T13:${getRandomPositiveInteger(12, 20)}:13.375Z`,
     id: nanoid(),
-    destination: randomDestination,
+    destination: randomDestination.name,
     isFavorite: Boolean(getRandomPositiveInteger(0, 1)),
     offers: [1, 2],
     type
   };
 };
 
-export {generatePoint};
+
+export {generatePoint, generateDestination, generateOfferType , };
 

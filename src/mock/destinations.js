@@ -1,12 +1,12 @@
 
 const destinationsArray =  [
   {
-    destination: 'Dubai is a major global city in the United Arab Emirates (UAE) known for its modern skyscrapers like the Burj Khalifa, luxury shopping, and a blend of traditional and contemporary culture.',
-    name: 'Dubai',
+    destination: 'Norway, officially the Kingdom of Norway, is a Nordic country located on the Scandinavian Peninsula in Northern Europe.',
+    name: 'Norway',
     pictures: [
       {
         src: 'https://loremflickr.com/300/200?r=0.0762563005163317',
-        description: 'Dubai'
+        description: 'Norway'
       }
     ]
   },
@@ -43,9 +43,14 @@ const destinationsArray =  [
 ];
 
 const returnDestination = (city) => {
-  const destinationCity = destinationsArray.filter((item) => item.name === city) ?? null;
+  const destinationCity = destinationsArray.filter((item) => item.name === city);
   return destinationCity[0];
 };
 
+const returnAllDestinations = () => {
+  const allDestinations = destinationsArray.map(({name}) => name);
+  return allDestinations;
+};
 
-export { destinationsArray, returnDestination};
+
+export { destinationsArray, returnDestination, returnAllDestinations};
