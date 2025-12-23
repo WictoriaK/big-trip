@@ -1,19 +1,6 @@
 import dayjs from 'dayjs';
+import {FilterTypes, HOURS_PER_DAY, MIN_IN_AN_HOUR} from './const.js';
 
-const FilterTypes = {
-  EVERYTHING: 'everything',
-  FUTURE: 'future',
-  PAST: 'past',
-};
-
-const SortTypes= {
-  DAY: 'default',
-  PRICE: 'price',
-  TIME: 'time',
-};
-
-const HOURS_PER_DAY = 24;
-const MIN_IN_AN_HOUR = 60;
 
 const getRandomPositiveInteger = (a = 0, b = 1) => {
   if (a === undefined) {
@@ -25,7 +12,6 @@ const getRandomPositiveInteger = (a = 0, b = 1) => {
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
 };
-
 const humanizePointDateFrom = (date, format) => dayjs(date).format(`${format}`);
 const humanizePointTimeFrom = (date, format) => dayjs(date).format(`${format}`);
 
@@ -40,19 +26,6 @@ const filter = {
 
 const getRandomArrayElement = (array) => array[getRandomPositiveInteger(0, array.length - 1)];
 
-const updateItem = (items, update) => {
-  const index = items.findIndex((item) => item.id === update.id);
-  if (index === -1) {
-    return items;
-  }
-
-  return [
-    ...items.slice(0, index),
-    update,
-    ...items.slice(index + 1),
-  ];
-};
-
 const getSortUp = (pointA, pointB) => pointA - pointB;
 
 const sortTimeUp = (pointA, pointB) => {
@@ -62,10 +35,9 @@ const sortTimeUp = (pointA, pointB) => {
   return getSortUp(timeB, timeA);
 };
 
-const sortPriceUp = (pointA, pointB) => getSortUp(pointB.basePrice, pointA.basePrice);
+const getSortDown = (pointA, pointB) => pointB - pointA;
 
-const sortDayUp = (pointA, pointB) => getSortUp(dayjs(pointA.dateFrom), dayjs(pointB.dateFrom));
-
+const sortPriceUp = (pointA, pointB) => getSortDown(pointA.basePrice, pointB.basePrice);
 
 const differentDate = (from, to) => {
   const date1 = dayjs(from);
@@ -74,23 +46,23 @@ const differentDate = (from, to) => {
   const dayResult = date2.diff(date1, 'day');
   const hourResult = date2.diff(date1, 'hour');
   const minuteResult = date2.diff(date1, 'minute');
-  if(dayResult){
+  if(dayResult) {
     return (
       `${dayResult}D ${Math.round(hourResult / HOURS_PER_DAY)}H ${Math.round(minuteResult / (HOURS_PER_DAY * MIN_IN_AN_HOUR))}M`
     );
-
   }
-  if(hourResult){
+
+  if(hourResult) {
     return(
       `${hourResult}H ${Math.round(minuteResult / HOURS_PER_DAY)}M`
     );
   }
-  return(
-    `${minuteResult}M`
-  );
 
+  return(`${minuteResult}M`);
 };
 
-export {getRandomPositiveInteger, humanizePointDateFrom, humanizePointTimeFrom, getRandomArrayElement, FilterTypes, filter, updateItem, SortTypes, sortPriceUp, sortTimeUp, differentDate, sortDayUp};
+const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
+
+export {getRandomPositiveInteger, humanizePointDateFrom, humanizePointTimeFrom, getRandomArrayElement, filter,  sortPriceUp, sortTimeUp, differentDate, isDatesEqual};
 
 

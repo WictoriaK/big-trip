@@ -1,3 +1,4 @@
+import he from 'he';
 import AbstractView from '../framework/view/abstract-view.js';
 import {humanizePointDateFrom, humanizePointTimeFrom, differentDate} from '../utils.js';
 import {offersArray} from '../mock/offers.js';
@@ -25,7 +26,6 @@ const createOffersTemplate = (point) => {
 
 const createTripPointTemplate = (point) => {
   const {basePrice, dateFrom, dateTo, destination, type, isFavorite} = point;
-  // console.log(offers);
 
   const date = dateFrom !== null
     ? humanizePointDateFrom(dateFrom, 'MMM D')
@@ -51,7 +51,7 @@ const createTripPointTemplate = (point) => {
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
                 </div>
-                <h3 class="event__title">${type} ${destination.name}</h3>
+                <h3 class="event__title">${type} ${he.encode(destination)}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
                     <time class="event__start-time" datetime="2019-03-18T10:30">${timeFrom}</time>
@@ -63,7 +63,7 @@ const createTripPointTemplate = (point) => {
 </p>
                 </div>
                 <p class="event__price">
-                  €&nbsp;<span class="event__price-value">${basePrice}</span>
+                  €&nbsp;<span class="event__price-value">${he.encode(String(basePrice))}</span>
                 </p>
                 <h4 class="visually-hidden">Offers:</h4>
                 <ul class="event__selected-offers">
