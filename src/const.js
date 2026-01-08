@@ -26,8 +26,4 @@ const UpdateType = {
   INIT: 'INIT',
 };
 
-
-
-const TypeEvents = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
-
-export { FilterTypes, SortTypes, HOURS_PER_DAY, MIN_IN_AN_HOUR, UserAction, UpdateType, TypeEvents };
+export { FilterTypes, SortTypes, HOURS_PER_DAY, MIN_IN_AN_HOUR, UserAction, UpdateType};

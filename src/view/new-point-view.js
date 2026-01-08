@@ -2,7 +2,7 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import he from 'he';
-import {getAllDestinations, getDestination, humanizePointDateFrom, humanizePointTimeFrom} from '../utils';
+import {getAllDestinations, getDestination} from '../utils.js';
 
 const defaultPoint =  {
   id: 0,
