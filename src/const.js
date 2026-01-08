@@ -23,6 +23,7 @@ const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT',
 };
 
-export { FilterTypes, SortTypes, HOURS_PER_DAY, MIN_IN_AN_HOUR, UserAction, UpdateType };
+export { FilterTypes, SortTypes, HOURS_PER_DAY, MIN_IN_AN_HOUR, UserAction, UpdateType};

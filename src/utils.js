@@ -23,7 +23,6 @@ const filter = {
   [FilterTypes.FUTURE]: (points) => points.filter((point) => isPointFuture(point.dateTo)),
   [FilterTypes.PAST]: (points) => points.filter((point) => isPointExpired(point.dateFrom)),
 };
-
 const getRandomArrayElement = (array) => array[getRandomPositiveInteger(0, array.length - 1)];
 
 const getSortUp = (pointA, pointB) => pointA - pointB;
@@ -61,8 +60,15 @@ const differentDate = (from, to) => {
   return(`${minuteResult}M`);
 };
 
-const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
 
-export {getRandomPositiveInteger, humanizePointDateFrom, humanizePointTimeFrom, getRandomArrayElement, filter,  sortPriceUp, sortTimeUp, differentDate, isDatesEqual};
+const getDestination = (city, destinations) => {
+  const destinationCity = destinations.filter((item) => item.name === city);
+  return destinationCity[0];
+};
+
+const getAllDestinations = (destinations) => destinations.map(({name}) => name);
+
+
+export {getRandomPositiveInteger, humanizePointDateFrom, humanizePointTimeFrom, getRandomArrayElement, filter,  sortPriceUp, sortTimeUp, differentDate, getDestination, getAllDestinations};
 
 
