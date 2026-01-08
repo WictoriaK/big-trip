@@ -1,9 +1,19 @@
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches: '*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 name: Project check
 jobs:
@@ -11,18 +21,47 @@ jobs:
     name: Check
     runs-on: ubuntu-latest
     steps:
-    - name: Set up Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '16'
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16'
 
-    - uses: actions/checkout@master
-      name: Checkout
+      - uses: actions/checkout@main
+        name: Checkout
 
-    - name: Install dependencies
-      run: |
-        npm install
+      - name: Install dependencies
+        run: |
+          npm install
 
-    - name: Run checks
-      run: |
-        npm run lint
+      - name: Run checks
+        run: |
+          npm run lint
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: |
+          npm config set package-lock false
+          npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
