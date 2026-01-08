@@ -23,6 +23,11 @@ const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT',
 };
 
-export { FilterTypes, SortTypes, HOURS_PER_DAY, MIN_IN_AN_HOUR, UserAction, UpdateType };
+
+
+const TypeEvents = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+
+export { FilterTypes, SortTypes, HOURS_PER_DAY, MIN_IN_AN_HOUR, UserAction, UpdateType, TypeEvents };
